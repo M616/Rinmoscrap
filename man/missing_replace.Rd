@@ -6,6 +6,9 @@
 \usage{
 missing_replace(x)
 }
+\value{
+an objet without '' or 'Nan'
+}
 \description{
 Missing replacement
 }
