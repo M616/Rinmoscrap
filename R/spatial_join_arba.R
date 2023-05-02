@@ -20,23 +20,25 @@ spatial_join_arba <- function(x)  {
   partidos_pba <- sf::st_make_valid(partidos_pba)
 
   #se renombran los poligonos de islas
-  partidos_pba <- partidos_pba %>% mutate(nam=case_when(nam=='Islas Baradero'~'Baradero',
-                                                nam=='Islas Campana'~'Campana',
-                                                nam=='Islas de San Nicolas'~'San Nicolás',
-                                                nam=='Islas de Zárate'~'Zárate',
-                                                nam=='Islas Ramallo'~'Ramallo',
-                                                nam=='Islas San Fernando'~'San Fernando',
-                                                nam=='Islas San Pedro'~'San Pedro',
-                                                nam=='Islas Tigre'~'Tigre',
-                                                TRUE~nam) )
+  #partidos_pba <- partidos_pba %>% mutate(nam=case_when(nam=='Islas Baradero'~'Baradero',
+  #                                              nam=='Islas Campana'~'Campana',
+  #                                              nam=='Islas de San Nicolas'~'San Nicolás',
+  #                                              nam=='Islas de Zárate'~'Zárate',
+  #                                              nam=='Islas Ramallo'~'Ramallo',
+  #                                              nam=='Islas San Fernando'~'San Fernando',
+  #                                              nam=='Islas San Pedro'~'San Pedro',
+  #                                              nam=='Islas Tigre'~'Tigre',
+  #                                              TRUE~nam) )
 
   partidos_pba <- partidos_pba %>% filter(!is.na(geometry))
 
-  x <- sf::st_join(partidos_pba['nam'],x,join=st_intersects)
+  x <- sf::st_join(partidos_pba[c('nam','cca')],x,join=st_intersects)
 
   x$geometry <- NULL
-  x$district <- x$nam
+  x$nombre_arba <- x$nam
   x$nam <- NULL
+  x$codigo_arba <- x$cca
+  x$cca <- NULL
 
   rm(partidos_pba,out,temp)
 
