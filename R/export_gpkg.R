@@ -17,6 +17,6 @@ export_gpkg <- function(x){
     crs=4326)
 
   dir.create('out')
-st_write (p, paste0('out/','inmo','.gpkg'),overwrite = TRUE)
+st_write (p, paste0('out/','terrenos_inmo_2023_02','.gpkg'),overwrite = TRUE)
 
 }
