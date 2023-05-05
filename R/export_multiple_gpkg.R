@@ -20,6 +20,6 @@ export_multiple_gpkg <- function(x){
   p %>%
     split(. $codigo_arba) %>%
     walk2(names(.),
-          ~ st_write (.x, paste0('out/',.y, '.gpkg')))
+          ~ st_write (.x, paste0('out/','terrenos_',.y,'_2023_02', '.gpkg')))
 
 }
