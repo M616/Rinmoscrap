@@ -37,7 +37,7 @@ spatial_join_arba <- function(x)  {
   x$geometry <- NULL
   x$nombre_arba <- x$nam
   x$nam <- NULL
-  x$codigo_arba <- x$cca
+  x$arba_code <- x$cca
   x$cca <- NULL
 
   rm(partidos_pba,out,temp)
