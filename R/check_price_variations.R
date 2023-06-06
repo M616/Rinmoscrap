@@ -3,44 +3,45 @@
 #' This function checks if there are variations in the 'price' variable for a given 'url'
 #' across two or more datasets, using the specified base dataset(s) for comparison.
 #'
-#' @param actual_base The base dataset for comparison.
-#' @param bases The dataset(s) to compare against the actual base dataset.
-#' @return The 'actual_base' dataset with an additional column 'has_new_price' indicating price variations.
+#' @param current_data The base dataset for comparison.
+#' @param previous_data The dataset(s) list to compare against the actual base dataset.
+#' @return A dataset with the 'current_data' data and an additional column 'has_new_price' indicating price variations.
 #' @export
-check_price_variations <- function(actual_base, bases) {
-  # Check if at least two datasets are provided
-  if (length(bases) < 1) {
+check_price_variations <- function(current_data, previous_data) {
+  # Check if at least one base dataset is provided
+  if (length(previous_data) < 1) {
     stop("At least one base dataset is required to compare prices.")
   }
 
   # Check if 'price' and 'url' variables exist in the datasets
-  if (!all(c("price", "url") %in% names(actual_base))) {
-    stop("The actual_base dataset should contain 'price' and 'url' variables.")
+  if (!all(c("price", "url") %in% names(current_data))) {
+    stop("The current_data dataset should contain 'price' and 'url' variables.")
   }
 
-  # Check if the specified bases are present in the datasets
-  if (!all(bases %in% names(.GlobalEnv))) {
-    stop("One or more specified base datasets are not present.")
-  }
+  # Convert current_data to data.table format
+  current_data <- as.data.table(current_data)
 
-  # Check if 'url' variable is unique in the actual base dataset
-  if (any(duplicated(actual_base$url))) {
-    stop("There are duplicate 'url' values in the actual base dataset.")
-  }
+  # Convert previous_data to data.table format
+  previous_data <- lapply(previous_data, function(base) {
+    if (is.data.frame(base)) {
+      as.data.table(base)
+    } else if (is.data.table(base)) {
+      base
+    } else {
+      stop("One or more specified base datasets are not valid.")
+    }
+  })
 
-  # Create a lookup table for the base datasets
-  base_lookup <- lapply(bases, function(base) split(base$price, base$url))
+  # Set key for current_data and previous_data
+  setkey(current_data, url)
+  previous_data <- lapply(previous_data, setkey, "url")
 
-  # Function to check if there are price variations for a given 'url'
-  check_price_variation <- function(url) {
-    actual_price <- actual_base$price[actual_base$url == url]
-    base_prices <- unlist(lapply(base_lookup, function(base) base[[url]]))
+  # Perform merge and calculate 'has_new_price'
+  merged_data <- merge(current_data, rbindlist(previous_data), by = "url", all.x = TRUE)
+  # Subset merged_data to unique 'url' values and calculate 'has_new_price'
+  merged_data <- merged_data[, .(has_new_price = any(price.x != price.y)), by = url]
+  merged_data <- merge(current_data, merged_data)
 
-    any(base_prices != actual_price)
-  }
-
-  # Apply the function to each unique 'url' in the actual base dataset
-  actual_base$has_new_price <- sapply(actual_base$url, check_price_variation)
-
-  return(actual_base)  # Return the 'actual_base' dataset with 'has_new_price' column
+  return(as.data.frame(merged_data))
 }
+
