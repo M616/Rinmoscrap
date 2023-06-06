@@ -9,11 +9,12 @@
 export_gpkg_files <- function(data, path) {
   library(sf)
 
-  groups <- split(data, list(data$codigo_arba, data$property_group))
+  data <- st_as_sf (data %>% filter(!is.na(latitude)&!is.na(longitude) ), coords=c('longitude','latitude'),remove=FALSE, crs=4326)
+  groups <- split(data, list(data$arba_code, data$property_group))
 
   for (group_name in names(groups)) {
-    codigo_arba <- unlist(strsplit(group_name, split = "\\."))
-    folder_name <- file.path(path, codigo_arba[1])
+    arba_code <- unlist(strsplit(group_name, split = "\\."))
+    folder_name <- file.path(path, arba_code[1])
     if (!dir.exists(folder_name)) {
       dir.create(folder_name, recursive = TRUE)
     }
@@ -21,7 +22,3 @@ export_gpkg_files <- function(data, path) {
     sf::st_write(groups[[group_name]], dsn = file_name, driver = "GPKG")
   }
 }
-
-
-
-
