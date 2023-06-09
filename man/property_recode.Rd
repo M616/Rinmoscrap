@@ -4,8 +4,44 @@
 \alias{property_recode}
 \title{property_recode}
 \usage{
-property_recode(x)
+property_recode(data)
+}
+\arguments{
+\item{data}{A data frame or tibble.}
+}
+\value{
+A modified data frame or tibble with the property types recoded into broader categories.
 }
 \description{
-Property type recode for the listing anouncements
+The function takes a data frame or tibble as input and recodes the property types based on specific criteria.
+}
+\details{
+This function performs property type recoding for the listing announcements. It is intended to be implemented in those databases where the 'property_group' variable does not come.
+}
+\examples{
+# Create a data frame with property types
+df <- data.frame(property_type = c('casa', 'departamento', 'galpon', 'oficina', 'terrenos', 'other'), stringsAsFactors = FALSE)
+df
+
+# Output:
+#   property_type
+# 1          casa
+# 2  departamento
+# 3        galpon
+# 4       oficina
+# 5      terrenos
+# 6         other
+
+# Apply the property_recode function
+modified_df <- property_recode(df)
+modified_df
+
+# Output:
+#   property_groups
+# 1            casa
+# 2    departamento
+# 3 galpon y depositos
+# 4 comercio y oficina
+# 5        terrenos
+# 6  otros inmuebles
 }

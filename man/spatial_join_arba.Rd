@@ -2,10 +2,16 @@
 % Please edit documentation in R/spatial_join_arba.R
 \name{spatial_join_arba}
 \alias{spatial_join_arba}
-\title{spatial_join_arba}
+\title{Spatial join with ARBA polygon base and attribute recoding}
 \usage{
-spatial_join_arba(x)
+spatial_join_arba(data)
+}
+\arguments{
+\item{data}{A spatial object representing points, lines, or polygons.}
+}
+\value{
+A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base.
 }
 \description{
-Spatial union with the ARBA polygon base and recoding with official nomenclature.
+This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature.
 }
