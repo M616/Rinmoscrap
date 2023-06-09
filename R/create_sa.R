@@ -41,5 +41,3 @@ create_sa <- function(data){
 
   return(data)
 }
-
-
