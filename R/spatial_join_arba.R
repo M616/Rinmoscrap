@@ -18,12 +18,13 @@ spatial_join_arba <- function(x) {
   x <- st_as_sf(x %>% filter(!is.na(latitude) & !is.na(longitude)),
                 coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
 
-  # Download and read the ARBA polygon base
-  temp <- tempfile()
-  url <- 'https://catalogo.datos.gba.gob.ar/dataset/627f65de-2510-4bf4-976b-16035828b5ae/resource/2cc73f96-98f7-42fa-a180-e56c755cf59a/download/limite_partidos.zip'
-  utils::download.file(url, temp)
-  out <- utils::unzip(temp)
-  partidos_pba <- sf::st_read(out[4])
+  # Download the ARBA polygon base and extract it to a temporary directory
+  temp_dir <- tempdir()
+  temp_zip <- file.path(temp_dir, "limite_partidos.zip")
+  temp_folder <- unzip(temp_zip, exdir = temp_dir)
+
+  # Read the ARBA polygon base
+  partidos_pba <- sf::st_read(temp_folder[4])
 
   # Prepare ARBA polygons for the spatial join
   sf_use_s2(FALSE)
