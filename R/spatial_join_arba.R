@@ -49,6 +49,7 @@ spatial_join_arba <- function(data) {
 
   # Clean up the temporary directory
   unlink(temp_dir, recursive = TRUE)
+  unlink(tempdir())
 
   return(data)
 }
