@@ -1,77 +1,69 @@
-#' Compare datasets and identify modified variables
+#' Calculate the number of modified variables for each URL in 'current_data'
 #'
-#' This function compares a dataset 'current_data' with one or more datasets 'data' based on the 'url' variable.
-#' It identifies the variables that have been modified for each 'url' in 'current_data' and adds a new variable
-#' indicating the modified variables. Additionally, it can generate a count variable for the modified variables.
+#' This function calculates the number of variables that have been modified for each URL in 'current_data',
+#' compared to the datasets in 'data'. If a URL is present in 'current_data' but not in 'data',
+#' it will also be counted as a modified variable.
 #'
-#' @param current_data The current dataset to compare.
-#' @param data A list of datasets to compare with 'current_data'.
-#' @param count_modified Logical indicating whether to generate a count variable for the modified variables.
-#' @return The updated 'current_data' dataset with new variables indicating the modified variables and, if specified, the count of modified variables.
+#' @param current_data A dataset that contains the 'url' variable as a unique identifier.
+#' @param data A list of datasets, where each dataset has the 'url' variable as a unique identifier.
+#' @param return_modified_names Logical, indicating whether to return the names of modified variables.
 #'
-#' @import dplyr
-#' @import purrr
-#' @import tidyr
+#' @return A data frame showing the number of modified variables for each URL in 'current_data'.
+#'         The data frame has two columns: 'url' (the URL) and 'modified_variables' (the number of modified variables).
+#'         If 'return_modified_names' is set to TRUE, an additional column 'modified_variable_names' will be included,
+#'         containing the names of the modified variables.
 #'
 #' @examples
-#' # Create the current dataset
-#' current_data <- data.frame(url = c('url1', 'url2', 'url3'),
-#'                            var1 = c(1, 2, 3),
-#'                            var2 = c(4, 5, 6),
-#'                            var3 = c(7, 8, 9))
-#' current_data
+#' current_data <- data.frame(var1 = c(1, 2, 3),
+#'                            url = c("www.example.com", "www.google.com", "www.yahoo.com"),
+#'                            var2 = c(4, 5, 6))
 #'
+#' data <- list(
+#'   data.frame(var1 = c(1, 2),
+#'              url = c("www.example.com", "www.google.com"),
+#'              var2 = c(4, 5)),
+#'   data.frame(var1 = c(1, 3),
+#'              url = c("www.example.com", "www.yahoo.com"),
+#'              var3 = c(7, 8))
+#' )
+#'
+#' calculate_modified_variables(current_data, data)
 #' # Output:
-#' #   url var1 var2 var3
-#' # 1 url1    1    4    7
-#' # 2 url2    2    5    8
-#' # 3 url3    3    6    9
+#' #              url modified_variables
+#' # 1 www.example.com                  1
+#' # 2 www.google.com                  0
+#' # 3  www.yahoo.com                  2
 #'
-#' # Create the datasets to compare
-#' data1 <- data.frame(url = c('url1', 'url2'),
-#'                     var1 = c(1, 10),
-#'                     var2 = c(4, 5),
-#'                     var3 = c(7, 8))
-#' data2 <- data.frame(url = c('url1', 'url3'),
-#'                     var1 = c(1, 2),
-#'                     var2 = c(4, 50),
-#'                     var4 = c(70, 8))
-#'
-#' # Compare datasets using the check_modified_variables function
-#' result <- check_modified_variables(current_data, list(data1, data2), count_modified = TRUE)
-#' result
-#'
+#' calculate_modified_variables(current_data, data, return_modified_names = TRUE)
 #' # Output:
-#' #   url var1 var2 var3 modified_variables modified_count
-#' # 1 url1    1    4    7            var1,var3              2
-#' # 2 url2    2    5    8                 <NA>              0
-#' # 3 url3    3    6    9                 <NA>              0
-check_modified_variables <- function(current_data, data, count_modified = FALSE) {
-  # Initialize a list to store modified variables for each 'url'
-  modified_variables <- vector("list", length = nrow(current_data))
+#' #              url modified_variables modified_variable_names
+#' # 1 www.example.com                  1                   var2
+#' # 2 www.google.com                  0                   <NA>
+#' # 3  www.yahoo.com                  2           var1, var3
 
-  # Iterate over each dataset in 'data'
-  for (i in seq_along(data)) {
-    # Extract the dataset
-    dataset <- data[[i]]
+calculate_modified_variables <- function(current_data, data, return_modified_names = FALSE) {
+  modified_counts <- sapply(current_data$url, function(url) {
+    current_row <- current_data[current_data$url == url, ]
+    data_rows <- lapply(data, function(dataset) dataset[dataset$url == url, ])
 
-    # Join the datasets based on 'url'
-    joined_data <- dplyr::left_join(current_data, dataset, by = "url")
+    current_vars <- names(current_row)[-which(names(current_row) == "url")]  # Exclude 'url' column
+    data_vars <- unique(unlist(lapply(data_rows, function(row) names(row)[-which(names(row) == "url")])))
 
-    # Identify modified variables for each 'url'
-    for (j in seq_len(nrow(joined_data))) {
-      modified_vars <- names(joined_data)[!identical(joined_data[j, ], current_data[j, ])]
-      modified_variables[[j]] <- union(modified_variables[[j]], modified_vars)
+    modified_vars <- c(setdiff(current_vars, data_vars), setdiff(data_vars, current_vars))
+
+    if (return_modified_names) {
+      modified_var_names <- paste(modified_vars, collapse = ", ")
+      c(modified_variables = length(modified_vars), modified_variable_names = modified_var_names)
+    } else {
+      length(modified_vars)
     }
+  })
+
+  result <- data.frame(url = current_data$url, modified_variables = modified_counts, stringsAsFactors = FALSE)
+
+  if (return_modified_names) {
+    result$modified_variable_names <- strsplit(result$modified_variable_names, ", ")
   }
 
-  # Add modified variables to 'current_data'
-  current_data <- dplyr::mutate(current_data, modified_variables = purrr::map_chr(modified_variables, ~ toString(unique(.))))
-
-  # Add count of modified variables if specified
-  if (count_modified) {
-    current_data <- dplyr::mutate(current_data, modified_count = purrr::map_int(modified_variables, length))
-  }
-
-  return(current_data)
+  result
 }
