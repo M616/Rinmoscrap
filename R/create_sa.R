@@ -11,6 +11,10 @@
 #'              The abbreviations used are 'ML' for api.mercadolibre.com, 'ZP' for www.zonaprop.com, and 'AP' for www.argenprop.com.
 #'              The function converts the "portal" column to a factor for categorical representation.
 #' @return The modified data frame with the new "portal" column representing the site abbreviation for each listing.
+
+#' @import dplyr
+#' @import stringr
+#'
 #' @export
 #'
 #' @examples
