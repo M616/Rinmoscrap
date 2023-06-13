@@ -1,8 +1,8 @@
-#' Export GPKG files grouped by 'codigo_arba' and 'property_group'
+#' Export GPKG files grouped by 'arba_code' and 'property_group'
 #'
-#' This function exports multiple GPKG files, one for each unique combination of 'codigo_arba' and 'property_group' in the data.
+#' This function exports multiple GPKG files, one for each unique combination of 'arba_code' and 'property_group' in the data.
 #'
-#' @param data A data frame with the variables 'codigo_arba' and 'property_group'.
+#' @param data A data frame with the variables 'arba_code' and 'property_group'.
 #' @param path Destination folder where the folders and GPKG files will be saved.
 #' @param include_duplicates Boolean indicating whether to include a GPKG file for the duplicated records.
 #' @return NULL
@@ -14,18 +14,18 @@ export_gpkg_files <- function(data, path, include_duplicates = FALSE) {
   # Convert data frame to sf object, filtering out rows with NA coordinates
   data <- st_as_sf(data %>% filter(!is.na(latitude) & !is.na(longitude)), coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
 
-  # Split data into groups based on unique combinations of 'codigo_arba' and 'property_group'
-  groups <- split(data, list(data$codigo_arba, data$property_group))
+  # Split data into groups based on unique combinations of 'arba_code' and 'property_group'
+  groups <- split(data, list(data$arba_code, data$property_group))
 
-  # If include_duplicates is TRUE, split data into groups based on unique 'codigo_arba' values
+  # If include_duplicates is TRUE, split data into groups based on unique 'arba_code' values
   duplicated_groups <- NULL
   if (include_duplicates) {
-    duplicated_groups <- split(data, list(data$codigo_arba))
+    duplicated_groups <- split(data, list(data$arba_code))
   }
 
   # Iterate over each group
   for (group_name in names(groups)) {
-    # Extract 'codigo_arba' from the group name
+    # Extract 'arba_code' from the group name
     arba_code <- unlist(strsplit(group_name, split = "\\."))
 
     # Create folder path using 'path' parameter
@@ -63,9 +63,9 @@ export_gpkg_files <- function(data, path, include_duplicates = FALSE) {
       # Filter duplicated data and perform necessary transformations
       duplicated_data <- duplicated_group_data %>%
         filter(!is.na(is_duplicated_coord), is_duplicated_coord) %>%
-        select(codigo_arba, url, is_duplicated_coord, date_extracted) %>%
+        select(arba_code, url, is_duplicated_coord, date_extracted) %>%
         mutate(date_extracted = format(date_extracted, "%m-%Y")) %>%
-        group_by(codigo_arba, geometry) %>%
+        group_by(arba_code, geometry) %>%
         summarize(
           url_list = paste(url, collapse = ", "),
           duplicated_count = sum(is_duplicated_coord),
