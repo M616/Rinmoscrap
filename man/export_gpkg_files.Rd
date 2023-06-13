@@ -2,17 +2,17 @@
 % Please edit documentation in R/export_gpkg_files.R
 \name{export_gpkg_files}
 \alias{export_gpkg_files}
-\title{Export GPKG files grouped by 'codigo_arba' and 'property_group'}
+\title{Export GPKG files grouped by 'arba_code' and 'property_group'}
 \usage{
 export_gpkg_files(data, path, include_duplicates = FALSE)
 }
 \arguments{
-\item{data}{A data frame with the variables 'codigo_arba' and 'property_group'.}
+\item{data}{A data frame with the variables 'arba_code' and 'property_group'.}
 
 \item{path}{Destination folder where the folders and GPKG files will be saved.}
 
 \item{include_duplicates}{Boolean indicating whether to include a GPKG file for the duplicated records.}
 }
 \description{
-This function exports multiple GPKG files, one for each unique combination of 'codigo_arba' and 'property_group' in the data.
+This function exports multiple GPKG files, one for each unique combination of 'arba_code' and 'property_group' in the data.
 }
