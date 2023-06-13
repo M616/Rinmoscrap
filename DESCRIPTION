@@ -17,5 +17,4 @@ Imports:
     sf,
     tidyverse,
     utils,
-    data.table,
-    testthat
+    data.table
