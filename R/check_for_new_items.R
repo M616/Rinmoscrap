@@ -4,7 +4,7 @@
 #' and adds a new boolean column 'is_new_listing' indicating whether each record is a new item.
 #'
 #' @param current_data The current dataset that contains the 'url' variable.
-#' @param previous_data A list of previous datasets, where each element is a dataset with the same structure and 'url' variable.
+#' @param previous_data A dataset with the same structure and 'url' variable.
 #' @param new_column_name The name of the new column indicating whether each record is a new item (default: 'is_new_listing').
 #' @return The updated dataset with the new 'is_new_listing' column.
 #'
