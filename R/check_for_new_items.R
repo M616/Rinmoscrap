@@ -10,7 +10,7 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr
+#' @import dplyr
 
 #'
 check_for_new_items <- function(current_data, previous_data, new_column_name = 'is_new_listing') {
