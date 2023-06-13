@@ -4,7 +4,10 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Marcos", "May", , "marcosmay@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0007-7188-659X"))
-Description: Through inmoscrap, real estate ad data stored in .csv databases is obtained. The Rinmoscrap package allows them to be handled in an R environment and subjected to different processes that facilitate their analysis and manipulation.
+Description: Through inmoscrap, real estate ad data stored in .csv databases 
+             is obtained. The Rinmoscrap package allows them to be handled in an R 
+             environment and subjected to different processes that facilitate their 
+             analysis and manipulation.
 License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
