@@ -8,6 +8,9 @@
 #' @param new_column_name The name of the new column indicating whether each record is a new item (default: 'is_new_listing').
 #' @return The updated dataset with the new 'is_new_listing' column.
 #'
+#' @export
+#'
+#'
 check_for_new_items <- function(current_data, previous_data, new_column_name = 'is_new_listing') {
   current_data[[new_column_name]] <- TRUE
 
