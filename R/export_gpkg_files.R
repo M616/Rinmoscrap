@@ -13,10 +13,11 @@
 #' @import sf
 #'
 export_gpkg_files <- function(data, path, include_duplicates = FALSE) {
-
+  suppressPackageStartupMessages(library(dplyr))
+  suppressPackageStartupMessages(library(sf))
 
   # Convert data frame to sf object, filtering out rows with NA coordinates
-  data <- st_as_sf(data %>% filter(!is.na(latitude) & !is.na(longitude)), coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
+  data <- sf::st_as_sf(data %>% filter(!is.na(latitude) & !is.na(longitude)), coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
 
   # Split data into groups based on unique combinations of 'arba_code' and 'property_group'
   groups <- split(data, list(data$arba_code, data$property_group))
