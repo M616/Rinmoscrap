@@ -13,7 +13,7 @@ check_for_new_items(
 \arguments{
 \item{current_data}{The current dataset that contains the 'url' variable.}
 
-\item{previous_data}{A list of previous datasets, where each element is a dataset with the same structure and 'url' variable.}
+\item{previous_data}{A dataset with the same structure and 'url' variable.}
 
 \item{new_column_name}{The name of the new column indicating whether each record is a new item (default: 'is_new_listing').}
 }
