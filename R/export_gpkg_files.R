@@ -6,10 +6,12 @@
 #' @param path Destination folder where the folders and GPKG files will be saved.
 #' @param include_duplicates Boolean indicating whether to include a GPKG file for the duplicated records.
 #' @return NULL
+
+#' @import dplyr
+#' @import sf
 #'
 export_gpkg_files <- function(data, path, include_duplicates = FALSE) {
-  library(sf)
-  library(dplyr)
+
 
   # Convert data frame to sf object, filtering out rows with NA coordinates
   data <- st_as_sf(data %>% filter(!is.na(latitude) & !is.na(longitude)), coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
