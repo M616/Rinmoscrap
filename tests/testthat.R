@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(rinmoscrap)
+library(Rinmoscrap)
 
-test_check("rinmoscrap")
+test_check("Rinmoscrap")
