@@ -6,7 +6,9 @@
 #' @param path Destination folder where the folders and GPKG files will be saved.
 #' @param include_duplicates Boolean indicating whether to include a GPKG file for the duplicated records.
 #' @return NULL
-
+#'
+#' @export
+#'
 #' @import dplyr
 #' @import sf
 #'
