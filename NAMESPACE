@@ -3,6 +3,7 @@
 export(check_for_new_items)
 export(check_price_variations)
 export(create_sa)
+export(data_quality)
 export(detect_duplicate_coords)
 export(export_duplicates)
 export(export_gpkg_files)
