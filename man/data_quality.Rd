@@ -2,26 +2,145 @@
 % Please edit documentation in R/data_quality.R
 \name{data_quality}
 \alias{data_quality}
-\title{Filter data based on property type and quality criteria}
+\title{Add data quality category based on property type and quality criteria}
 \usage{
 data_quality(data)
 }
 \arguments{
-\item{data}{The dataset to be filtered.}
+\item{data}{The dataset to which the data quality category will be added.}
 }
 \value{
-A filtered dataset with an additional column "data_quality" indicating the quality category of each property.
+A dataset with an additional column "data_quality" indicating the quality category of each property.
 }
 \description{
-This function filters a dataset based on property type and specific quality criteria for different property groups, including houses, PHs, and apartments.
+This function adds a data quality category to a dataset based on property type and specific quality criteria for different property groups, including houses, PHs, and apartments.
 }
 \details{
-The function applies the following filtering criteria to determine the quality category of each property:
+The function applies the following criteria to determine the quality category of each property and adds a new column called "data_quality" to the dataset:
+\itemize{
+\item Category A represents properties of the highest quality.
+\item Category B represents properties of intermediate quality.
+\item Category C represents properties of relatively lower quality.
+}
+
+For each property group (houses, PHs, and apartments), the function checks various attributes such as land surface, reconstructed land surface, total surface, covered surface, number of bedrooms, number of bathrooms, property age, garage amount, and room amount to determine the quality category.
+
+Specifically, the function assigns the following quality categories based on the filtering criteria:
+\itemize{
+\item Houses:
+\itemize{
+\item Category A: Houses that meet the following criteria:
+\itemize{
+\item Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 7 (inclusive).
+\item Number of bathrooms is between 1 and 7 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property's year built is between 1900 and the current year.
+\item Number of garage spaces is between 0 and 6 (inclusive).
+\item Number of rooms is between 1 and 10 (inclusive).
+}
+\item Category B: Houses that meet the following criteria:
+\itemize{
+\item Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 7 (inclusive).
+\item Number of bathrooms is between 1 and 7 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property's year built is between 1900 and the current year.
+}
+\item Category C: Houses that meet the following criteria:
+\itemize{
+\item Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 7 (inclusive).
+\item Number of bathrooms is between 1 and 7 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+}
+}
+\item PHs (Propiedad Horizontal):
+\itemize{
+\item Category A: PHs that meet the following criteria:
+\itemize{
+\item Land surface or reconstructed land surface is greater than 0.
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 6 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property's year built is between 1900 and the current year.
+\item Number of garage spaces is between 0 and 3 (inclusive).
+\item Number of rooms is between 1 and 7 (inclusive).
+}
+\item Category AB: PHs that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 6 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property's year built is between 1900 and the current year.
+\item Number of garage spaces is between 0 and 3 (inclusive).
+\item Number of rooms is between 1 and 7 (inclusive).
+}
+\item Category B: PHs that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Total surface is not equal to covered surface.
+\item Number of bedrooms is between 1 and 6 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property's year built is between 1900 and the current year.
+}
+\item Category C: PHs that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Number of bedrooms is between 1 and 6 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+}
+}
+\item Apartments (Departamentos):
+\itemize{
+\item Category A: Apartments that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Number of bedrooms is between 1 and 4 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property is not marked as "is_finished_property" missing.
+\item The property's year built is between 1900 and the current year.
+\item Number of garage spaces is between 0 and 2 (inclusive).
+\item Number of rooms is between 1 and 5 (inclusive).
+}
+\item Category B: Apartments that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Number of bedrooms is between 1 and 4 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property is not marked as "is_finished_property" missing.
+\item The property's year built is between 1900 and the current year.
+\item Number of rooms is between 1 and 5 (inclusive).
+}
+\item Category C: Apartments that meet the following criteria:
+\itemize{
+\item Total surface and covered surface are greater than 0.
+\item Number of bedrooms is between 1 and 4 (inclusive).
+\item Number of bathrooms is between 1 and 4 (inclusive).
+\item The property is not marked as "is_new_property" missing.
+\item The property is not marked as "is_finished_property" missing.
+}
+}
+}
+
+Note: The function assumes that the input dataset has columns named "property_group", "land_surface", "reconstructed_land_surface", "total_surface", "covered_surface", "number_bedrooms", "number_bathrooms", "is_new_property", "year_built", "garage_amount", "number_rooms", and "is_finished_property" that are used for applying the quality criteria.
 
 ##########warning!!!! ojo!!!! chequear que una vez obtenidas las categorias de esta variable
 ver que a la hora de nalizar y operar copn datos considere las columnas correctas( complementariedad de las variables de superficie). es decir, ver que con que variables operar, por ejemplo de superficie (si es reconstructed o sin reconstructed)
-
-\link{Documentation goes here...}
 }
 \examples{
 data <- read.csv("property_data.csv")
