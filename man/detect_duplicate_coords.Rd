@@ -4,22 +4,29 @@
 \alias{detect_duplicate_coords}
 \title{Detect duplicate geographic coordinate pairs and generate segmented output files}
 \usage{
-detect_duplicate_coords(data)
+detect_duplicate_coords(data, generate_count_logical = FALSE)
 }
 \arguments{
 \item{data}{The dataset containing the geographic coordinates.
 It should have at least two columns named 'latitude' and 'longitude'
 representing the coordinates.}
+
+\item{generate_count_logical}{A logical value indicating whether to generate
+the 'count_duplicates' column. If TRUE, the 'count_duplicates' column
+will be added to the output dataset (default is FALSE).}
 }
 \value{
-The original dataset with an added 'is_duplicated_coord' column
-of type logical.
+The original dataset with an added 'is_duplicated_coord' column of
+type logical. If 'generate_count_logical' is TRUE, the dataset will
+also contain a 'count_duplicates' column of type integer.
 }
 \description{
 This function takes a dataset containing geographic coordinates and checks
 for duplicate coordinate pairs. It then adds a new boolean column called
 'is_duplicated_coord' that indicates whether a row has a duplicate
-coordinate (TRUE if it is a duplicate, FALSE otherwise).
+coordinate (TRUE if it is a duplicate, FALSE otherwise). It also adds an
+optional 'count_duplicates' column that represents the number of occurrences
+of each coordinate pair.
 }
 \examples{
 data <- data.frame(latitude = c(37.7749, 40.7128, 37.7749, 34.0522),
