@@ -1,10 +1,22 @@
-# Function to filter a dataframe based on the count of unique digits in a specified column
-# Parameters:
-#   - data: A dataframe containing the data
-#   - column: The name of the column in the dataframe to apply the function to
-# Returns:
-#   The filtered dataframe where the count of unique digits in the specified column is greater than 1
-
+#' Filter a dataframe based on the count of unique digits in a specified column
+#'
+#' This function takes a dataframe and filters the data based on the condition
+#' that the count of unique digits is greater than 1 in the specified column.
+#'
+#' @export
+#' @importFrom base unique length
+#' @param data A dataframe containing the data
+#' @param column The name of the column in the dataframe to apply the function to
+#' @return The filtered dataframe where the count of unique digits in the specified column is greater than 1
+#'
+#' @examples
+#' # Example dataframe
+#' df <- data.frame(ID = 1:5, Numbers = c(123, 4567, 89, 1010, 222))
+#'
+#' # Apply the function to the "Numbers" column and filter the dataframe
+#' filtered_df <- filter_repeated_digits(df, "Numbers")
+#' print(filtered_df)
+#'
 filter_repeated_digits <- function(data, column) {
   # Apply the function to each element in the specified column
   result <- sapply(data[[column]], function(element) {
