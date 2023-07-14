@@ -15,7 +15,9 @@
 #' filtered_df <- filter_repeated_digits(df, "Numbers")
 #' print(filtered_df)
 #'
-#'@export
+#' @import dplyr
+#'
+#' @export
 #'
 filter_repeated_digits <- function(data, column) {
   # Apply the function to each element in the specified column
