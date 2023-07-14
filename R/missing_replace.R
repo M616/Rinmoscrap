@@ -29,7 +29,9 @@
 #' # 3  <NA>  <NA>
 missing_replace <- function(data) {
   data <- data %>% mutate(across(where(is.character), ~ na_if(., ''))) %>%
-    mutate(across(where(is.character), ~ na_if(., 'NaN')))
+    mutate(across(where(is.character), ~ na_if(., 'NaN'))) |>
+    mutate(across(where(is.numeric), ~ replace(., is.na(.), NA)))
+
 
   return(data)
 }
