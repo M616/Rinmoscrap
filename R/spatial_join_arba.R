@@ -8,14 +8,20 @@
 #'
 #' @export
 #'
-#' @import dplyr
 #' @import sf
 #' @importFrom utils download.file unzip
+#'
+#' @examples
+#' # Example usage
+#' data <- read_sf("path/to/your/data.shp")
+#' result <- spatial_join_arba(data)
+#'
+#' @references
+#' More information about ARBA: https://www.arba.gov.ar/
 
 spatial_join_arba <- function(data) {
   # Convert the input object to sf and filter out rows with missing latitude or longitude values
-  data <- sf::st_as_sf(data %>% filter(!is.na(latitude) & !is.na(longitude)),
-                       coords = c('longitude', 'latitude'), remove = FALSE, crs = 4326)
+  data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326)
 
   # Create a temporary directory for storing the ARBA polygon base
   temp_dir <- tempdir()
@@ -41,11 +47,14 @@ spatial_join_arba <- function(data) {
   data <- sf::st_join(partidos_pba[c('nam', 'cca')], data, join = sf::st_intersects)
 
   # Remove geometry column and rename attributes
-  data$geometry <- NULL
+  data <- sf::st_drop_geometry(data)
   data$nombre_arba <- data$nam
-  data$nam <- NULL
   data$arba_code <- data$cca
+  data$nam <- NULL
   data$cca <- NULL
+
+  # Reset index to a consecutive sequence of integers
+  rownames(data) <- unname(seq_len(nrow(data)))
 
   # Clean up the temporary directory
   unlink(temp_dir, recursive = TRUE)
