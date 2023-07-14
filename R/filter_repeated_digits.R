@@ -3,8 +3,6 @@
 #' This function takes a dataframe and filters the data based on the condition
 #' that the count of unique digits is greater than 1 in the specified column.
 #'
-#' @export
-#' @importFrom base unique length
 #' @param data A dataframe containing the data
 #' @param column The name of the column in the dataframe to apply the function to
 #' @return The filtered dataframe where the count of unique digits in the specified column is greater than 1
@@ -16,6 +14,8 @@
 #' # Apply the function to the "Numbers" column and filter the dataframe
 #' filtered_df <- filter_repeated_digits(df, "Numbers")
 #' print(filtered_df)
+#'
+#'@export
 #'
 filter_repeated_digits <- function(data, column) {
   # Apply the function to each element in the specified column
