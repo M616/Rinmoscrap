@@ -15,3 +15,12 @@ A modified spatial object with additional attributes obtained from the spatial j
 \description{
 This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature.
 }
+\examples{
+# Example usage
+data <- read_sf("path/to/your/data.shp")
+result <- spatial_join_arba(data)
+
+}
+\references{
+More information about ARBA: https://www.arba.gov.ar/
+}
