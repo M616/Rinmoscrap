@@ -21,7 +21,7 @@
 
 spatial_join_arba <- function(data) {
   # Convert the input object to sf and filter out rows with missing latitude or longitude values
-  data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326)
+  data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326,remove=FALSE)
 
   # Create a temporary directory for storing the ARBA polygon base
   temp_dir <- tempdir()
