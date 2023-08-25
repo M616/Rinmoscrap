@@ -21,20 +21,21 @@
 trim_tails <- function(data, column, lower_percentage, upper_percentage) {
   # Get the column from the dataframe
   variable <- data[[column]]
-  
+
   # Calculate the number of observations to exclude on each side
   n <- length(variable)
   lower_exclude <- round(n * lower_percentage / 100)
   upper_exclude <- round(n * upper_percentage / 100)
-  
+
   # Sort the variable in ascending order
   sorted_data <- sort(variable)
-  
+
   # Trim the tails by excluding the specified percentages of observations from each side
   trimmed_data <- sorted_data[(lower_exclude + 1):(n - upper_exclude)]
-  
+
   # Filter the original dataframe based on the trimmed data
-  filtered_data <- data[data[[column]] %in% trimmed_data, ]
-  
+  filtered_data <- data[data[[column]] >= min(trimmed_data) & data[[column]] <= max(trimmed_data), ]
+
+
   return(filtered_data)
 }
