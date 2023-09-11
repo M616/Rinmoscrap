@@ -1,10 +1,12 @@
 #' Spatial join with ARBA polygon base and attribute recoding
 #'
-#' This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature.
+#' This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature and optionally adds a 'corona' column based on 'arba_code'.
 #'
 #' @param data A spatial object representing points, lines, or polygons.
 #'
-#' @return A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base.
+#' @param include_crown Logical, indicating whether to include the 'corona' column based on 'arba_code'. Default is FALSE.
+#'
+#' @return A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a 'corona' column.
 #'
 #' @export
 #'
@@ -14,14 +16,20 @@
 #' @examples
 #' # Example usage
 #' data <- read_sf("path/to/your/data.shp")
+#' # Perform spatial join without 'corona' column
 #' result <- spatial_join_arba(data)
+#' # Perform spatial join with 'corona' column
+#' result_with_crown <- spatial_join_arba(data, include_crown = TRUE)
 #'
 #' @references
 #' More information about ARBA: https://www.arba.gov.ar/
+#'
+#' @seealso
+#' `crown_mapping` - A vector mapping 'arba_code' to 'corona' values.
 
-spatial_join_arba <- function(data) {
+spatial_join_arba <- function(data, include_crown = FALSE) {
   # Convert the input object to sf and filter out rows with missing latitude or longitude values
-  data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326,remove=FALSE)
+  data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326, remove = FALSE)
 
   # Create a temporary directory for storing the ARBA polygon base
   temp_dir <- tempdir()
@@ -55,6 +63,19 @@ spatial_join_arba <- function(data) {
 
   # Reset index to a consecutive sequence of integers
   rownames(data) <- unname(seq_len(nrow(data)))
+
+  # Add 'corona' column based on 'arba_code' if include_crown is TRUE
+  if (include_crown) {
+    crown_mapping <- c(
+      `136` = 1, `135` = 1, `133` = 2, `132` = 2, `131` = 2, `130` = 2, `129` = 3,
+      `120` = 2, `118` = 3, `117` = 1, `115` = 3, `114` = 3, `110` = 1, `101` = 1,
+      `100` = 3, `97` = 1, `96` = 1, `86` = 1, `84` = 3, `74` = 2, `72` = 2,
+      `70` = 1, `68` = 3, `64` = 3, `63` = 1, `57` = 2, `55` = 3, `47` = 1,
+      `46` = 3, `41` = 3, `38` = 3, `32` = 2, `31` = 3, `30` = 2, `25` = 1,
+      `15` = 3, `14` = 3, `13` = 3, `4` = 1, `3` = 2
+    )
+    data$corona <- crown_mapping[as.character(data$arba_code)]
+  }
 
   # Clean up the temporary directory
   unlink(temp_dir, recursive = TRUE)
