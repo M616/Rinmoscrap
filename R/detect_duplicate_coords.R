@@ -1,4 +1,5 @@
-#' Detect duplicate geographic coordinate pairs and generate segmented output files
+#' Detect duplicate geographic coordinate pairs and and count the number of
+#' repetitions per coordinate
 #'
 #' This function takes a dataset containing geographic coordinates and checks
 #' for duplicate coordinate pairs. It then adds a new boolean column called
@@ -10,7 +11,7 @@
 #' @param data The dataset containing the geographic coordinates.
 #'        It should have at least two columns named 'latitude' and 'longitude'
 #'        representing the coordinates.
-#' @param generate_count_logical A logical value indicating whether to generate
+#' @param generate_count A logical value indicating whether to generate
 #'        the 'count_duplicates' column. If TRUE, the 'count_duplicates' column
 #'        will be added to the output dataset (default is FALSE).
 #' @return The original dataset with an added 'is_duplicated_coord' column of
@@ -28,12 +29,12 @@
 #' @import dplyr
 #' @importFrom sf st_as_sf st_sfc st_set_crs st_write
 #' @export
-detect_duplicate_coords <- function(data, generate_count_logical = FALSE) {
+detect_duplicate_coords <- function(data, generate_count = FALSE) {
   duplicated_coords <- data %>%
     group_by(latitude, longitude) %>%
     mutate(is_duplicated_coord = n() > 1)
 
-  if (generate_count_logical) {
+  if (generate_count) {
     duplicated_coords <- duplicated_coords %>%
       group_by(latitude, longitude) %>%
       mutate(count_duplicates = n()) %>%
