@@ -4,23 +4,31 @@
 \alias{spatial_join_arba}
 \title{Spatial join with ARBA polygon base and attribute recoding}
 \usage{
-spatial_join_arba(data)
+spatial_join_arba(data, include_crown = FALSE)
 }
 \arguments{
 \item{data}{A spatial object representing points, lines, or polygons.}
+
+\item{include_crown}{Logical, indicating whether to include the 'corona' column based on 'arba_code'. Default is FALSE.}
 }
 \value{
-A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base.
+A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a 'corona' column.
 }
 \description{
-This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature.
+This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature and optionally adds a 'corona' column based on 'arba_code'.
 }
 \examples{
 # Example usage
 data <- read_sf("path/to/your/data.shp")
+# Perform spatial join without 'corona' column
 result <- spatial_join_arba(data)
+# Perform spatial join with 'corona' column
+result_with_crown <- spatial_join_arba(data, include_crown = TRUE)
 
 }
 \references{
 More information about ARBA: https://www.arba.gov.ar/
+}
+\seealso{
+\code{crown_mapping} - A vector mapping 'arba_code' to 'corona' values.
 }
