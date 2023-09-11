@@ -2,16 +2,17 @@
 % Please edit documentation in R/detect_duplicate_coords.R
 \name{detect_duplicate_coords}
 \alias{detect_duplicate_coords}
-\title{Detect duplicate geographic coordinate pairs and generate segmented output files}
+\title{Detect duplicate geographic coordinate pairs and and count the number of
+repetitions per coordinate}
 \usage{
-detect_duplicate_coords(data, generate_count_logical = FALSE)
+detect_duplicate_coords(data, generate_count = FALSE)
 }
 \arguments{
 \item{data}{The dataset containing the geographic coordinates.
 It should have at least two columns named 'latitude' and 'longitude'
 representing the coordinates.}
 
-\item{generate_count_logical}{A logical value indicating whether to generate
+\item{generate_count}{A logical value indicating whether to generate
 the 'count_duplicates' column. If TRUE, the 'count_duplicates' column
 will be added to the output dataset (default is FALSE).}
 }
