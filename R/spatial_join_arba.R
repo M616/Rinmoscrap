@@ -66,15 +66,17 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
 
   # Add 'corona' column based on 'arba_code' if include_crown is TRUE
   if (include_crown) {
+    # Formatting 'arba_code' to three characters with leading zeros
+    data$arba_code <- sprintf("%03d", as.integer(data$arba_code))
     crown_mapping <- c(
-      `136` = 1, `135` = 1, `133` = 2, `132` = 2, `131` = 2, `130` = 2, `129` = 3,
-      `120` = 2, `118` = 3, `117` = 1, `115` = 3, `114` = 3, `110` = 1, `101` = 1,
-      `100` = 3, `97` = 1, `96` = 1, `86` = 1, `84` = 3, `74` = 2, `72` = 2,
-      `70` = 1, `68` = 3, `64` = 3, `63` = 1, `57` = 2, `55` = 3, `47` = 1,
-      `46` = 3, `41` = 3, `38` = 3, `32` = 2, `31` = 3, `30` = 2, `25` = 1,
-      `15` = 3, `14` = 3, `13` = 3, `4` = 1, `3` = 2
+      "136" = 1, "135" = 1, "133" = 2, "132" = 2, "131" = 2, "130" = 2, "129" = 3,
+      "120" = 2, "118" = 3, "117" = 1, "115" = 3, "114" = 3, "110" = 1, "101" = 1,
+      "100" = 3, "097" = 1, "096" = 1, "086" = 1, "084" = 3, "074" = 2, "072" = 2,
+      "070" = 1, "068" = 3, "064" = 3, "063" = 1, "057" = 2, "055" = 3, "047" = 1,
+      "046" = 3, "041" = 3, "038" = 3, "032" = 2, "031" = 3, "030" = 2, "025" = 1,
+      "015" = 3, "014" = 3, "013" = 3, "004" = 1, "003" = 2
     )
-    data$corona <- crown_mapping[as.character(data$arba_code)]
+    data$corona <- crown_mapping[data$arba_code]
   }
 
   # Clean up the temporary directory
