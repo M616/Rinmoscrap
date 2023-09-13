@@ -1,12 +1,20 @@
 #' Spatial join with ARBA polygon base and attribute recoding
 #'
-#' This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature and optionally adds a 'corona' column based on 'arba_code'.
+#' This function performs a spatial join between a spatial object and the base of the ARBA
+#' polygon. It also recodes the resulting attributes using the official nomenclature and,
+#' optionally, adds a 'corona' column for the districts of the RMBA
+#' - Buenos Aires Metropolitan Region - (Fernández Leonardo, 2011. Instituto del Conurbano.
+#' Universidad Nacional de General Sarmiento).
+#' For the district of La Matanza, the function takes into account the criteria
+#' established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.pdf).
 #'
 #' @param data A spatial object representing points, lines, or polygons.
 #'
-#' @param include_crown Logical, indicating whether to include the 'corona' column based on 'arba_code'. Default is FALSE.
+#' @param include_crown Logical, indicating whether to include the 'corona' column. Default is FALSE.
 #'
-#' @return A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a 'corona' column.
+#' @return A modified spatial object with additional attributes obtained from the spatial
+#' join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a
+#' 'corona' column.
 #'
 #' @export
 #'
@@ -24,8 +32,13 @@
 #' @references
 #' More information about ARBA: https://www.arba.gov.ar/
 #'
-#' @seealso
-#' `crown_mapping` - A vector mapping 'arba_code' to 'corona' values.
+#' Fernández Leonardo (2011).Censo 2010. Somos 14.819.137 habitantes en
+#' la Región Metropolitana de Buenos Aires. Instituto del Conurbano.
+#' Universidad Nacional de General Sarmiento. www.urbared.ungs.edu.ar
+#'
+#' https://www.indec.gob.ar/dbindec/folleto_gba.pdf'
+#'
+#'
 
 spatial_join_arba <- function(data, include_crown = FALSE) {
   # Convert the input object to sf and filter out rows with missing latitude or longitude values
@@ -50,9 +63,47 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   # Prepare ARBA polygons for the spatial join
   sf_use_s2(FALSE)
   partidos_pba <- sf::st_make_valid(partidos_pba)  # Ensure polygon validity
+  partidos_pba <-  partidos_pba |> filter(cca!='070')
+
+  partidos_pba$cca <- sprintf("%03d", as.integer(partidos_pba$cca))
+  crown_mapping <- c(
+    "136" = 1, "135" = 1, "133" = 2, "132" = 2, "131" = 2, "130" = 2, "129" = 3,
+    "120" = 2, "118" = 3, "117" = 1, "115" = 3, "114" = 3, "110" = 1, "101" = 1,
+    "100" = 3, "097" = 1, "096" = 1, "086" = 1, "084" = 3, "074" = 2, "072" = 2,
+    "070" = 1, "068" = 3, "064" = 3, "063" = 1, "057" = 2, "055" = 3, "047" = 1,
+    "046" = 3, "041" = 3, "038" = 3, "032" = 2, "031" = 3, "030" = 2, "025" = 1,
+    "015" = 3, "014" = 3, "013" = 3, "004" = 1, "003" = 2
+  )
+  partidos_pba$corona <- crown_mapping[partidos_pba$cca]
+
+
+  partidos_pba <- partidos_pba |> select(cca,
+                                         cde,
+                                         nam,
+                                         corona)
+
+  #partidos_pba <-  st_transform(partidos_pba, crs = 4326)
+
+
+  #partidos_pba <-  sf::st_crs(partidos_pba,4326)
+  #descarga el poligono de la matanza de github
+  coronas_file <- paste0(system.file(package = "Rinmoscrap"), '/data/coronas_la_matanza.gpkg')
+  coronas_gpkg <- sf::st_read(coronas_file)
+  coronas_gpkg <- sf::st_make_valid(coronas_gpkg)
+  coronas_gpkg <-  st_transform(coronas_gpkg, crs = 4326)
+
+  coronas_gpkg <- coronas_gpkg |> select(cca,
+                                         cde,
+                                         nam,
+                                         corona)
+
+
+  partidos_pba <-  bind_rows(partidos_pba,coronas_gpkg)
+  partidos_pba <- sf::st_make_valid(partidos_pba)
+
 
   # Perform spatial join with ARBA polygons
-  data <- sf::st_join(partidos_pba[c('nam', 'cca')], data, join = sf::st_intersects)
+  data <- sf::st_join(partidos_pba[c('nam', 'cca','corona')], data, join = sf::st_intersects)
 
   # Remove geometry column and rename attributes
   data <- sf::st_drop_geometry(data)
@@ -61,22 +112,17 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   data$nam <- NULL
   data$cca <- NULL
 
+  corona <- data$corona
+
+  data <-  data |>
+    select(-corona)
+
   # Reset index to a consecutive sequence of integers
   rownames(data) <- unname(seq_len(nrow(data)))
 
   # Add 'corona' column based on 'arba_code' if include_crown is TRUE
   if (include_crown) {
-    # Formatting 'arba_code' to three characters with leading zeros
-    data$arba_code <- sprintf("%03d", as.integer(data$arba_code))
-    crown_mapping <- c(
-      "136" = 1, "135" = 1, "133" = 2, "132" = 2, "131" = 2, "130" = 2, "129" = 3,
-      "120" = 2, "118" = 3, "117" = 1, "115" = 3, "114" = 3, "110" = 1, "101" = 1,
-      "100" = 3, "097" = 1, "096" = 1, "086" = 1, "084" = 3, "074" = 2, "072" = 2,
-      "070" = 1, "068" = 3, "064" = 3, "063" = 1, "057" = 2, "055" = 3, "047" = 1,
-      "046" = 3, "041" = 3, "038" = 3, "032" = 2, "031" = 3, "030" = 2, "025" = 1,
-      "015" = 3, "014" = 3, "013" = 3, "004" = 1, "003" = 2
-    )
-    data$corona <- crown_mapping[data$arba_code]
+    data$corona <- corona
   }
 
   # Clean up the temporary directory
