@@ -9,13 +9,23 @@ spatial_join_arba(data, include_crown = FALSE)
 \arguments{
 \item{data}{A spatial object representing points, lines, or polygons.}
 
-\item{include_crown}{Logical, indicating whether to include the 'corona' column based on 'arba_code'. Default is FALSE.}
+\item{include_crown}{Logical, indicating whether to include the 'corona' column. Default is FALSE.}
 }
 \value{
-A modified spatial object with additional attributes obtained from the spatial join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a 'corona' column.
+A modified spatial object with additional attributes obtained from the spatial
+join with the ARBA polygon base. If 'include_crown' is TRUE, it also includes a
+'corona' column.
 }
 \description{
-This function performs a spatial join between a spatial object and the ARBA polygon base. It also recodes the resulting attributes using the official nomenclature and optionally adds a 'corona' column based on 'arba_code'.
+This function performs a spatial join between a spatial object and the base of the ARBA
+polygon. It also recodes the resulting attributes using the official nomenclature and,
+optionally, adds a 'corona' column for the districts of the RMBA
+\itemize{
+\item Buenos Aires Metropolitan Region - (Fernández Leonardo, 2011. Instituto del Conurbano.
+Universidad Nacional de General Sarmiento).
+For the district of La Matanza, the function takes into account the criteria
+established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.pdf).
+}
 }
 \examples{
 # Example usage
@@ -28,7 +38,10 @@ result_with_crown <- spatial_join_arba(data, include_crown = TRUE)
 }
 \references{
 More information about ARBA: https://www.arba.gov.ar/
-}
-\seealso{
-\code{crown_mapping} - A vector mapping 'arba_code' to 'corona' values.
+
+Fernández Leonardo (2011).Censo 2010. Somos 14.819.137 habitantes en
+la Región Metropolitana de Buenos Aires. Instituto del Conurbano.
+Universidad Nacional de General Sarmiento. www.urbared.ungs.edu.ar
+
+https://www.indec.gob.ar/dbindec/folleto_gba.pdf'
 }
