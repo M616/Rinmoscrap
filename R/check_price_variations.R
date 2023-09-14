@@ -7,6 +7,7 @@
 #' @param previous_data The dataset(s) list to compare against the actual base dataset.
 #' @return A dataset with the 'current_data' data and an additional column 'has_new_price' indicating price variations.
 #' @export
+
 check_price_variations <- function(current_data, previous_data) {
   # Check if at least one base dataset is provided
   if (length(previous_data) < 1) {
