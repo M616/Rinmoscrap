@@ -1,24 +1,33 @@
 #' Add data quality category based on property type and quality criteria
 #'
-#' This function adds a data quality category to a dataset based on property type and specific quality criteria for different property groups, including houses, PHs, and apartments.
+#' This function adds a data quality category to a dataset based on property type and
+#' specific quality criteria for different property groups, including houses, PHs, and
+#' apartments.
 #'
 #' @param data The dataset to which the data quality category will be added.
 #'
-#' @return A dataset with an additional column "data_quality" indicating the quality category of each property.
+#' @return A dataset with an additional column "data_quality" indicating the quality
+#' category of each property.
 #'
-#' @details The function applies the following criteria to determine the quality category of each property and adds a new column called "data_quality" to the dataset:
+#' @details The function applies the following criteria to determine the quality
+#' category of each property and adds a new column called "data_quality" to the dataset:
 #'
 #' - Category A represents properties of the highest quality.
 #' - Category B represents properties of intermediate quality.
 #' - Category C represents properties of relatively lower quality.
 #'
-#' For each property group (houses, PHs, and apartments), the function checks various attributes such as land surface, reconstructed land surface, total surface, covered surface, number of bedrooms, number of bathrooms, property age, garage amount, and room amount to determine the quality category.
+#' For each property group (houses, PHs, and apartments), the function checks various
+#' attributes such as land surface, reconstructed land surface, total surface, covered
+#' surface, number of bedrooms, number of bathrooms, property age, garage amount, and
+#' room amount to determine the quality category.
 #'
-#' Specifically, the function assigns the following quality categories based on the filtering criteria:
+#' Specifically, the function assigns the following quality categories based on the
+#' filtering criteria:
 #'
 #' - Houses:
 #'   - Category A: Houses that meet the following criteria:
-#'     - Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+#'     - Land surface or reconstructed land surface is greater than 0 and not equal to
+#'     reconstructed land surface.
 #'     - Total surface and covered surface are greater than 0.
 #'     - Total surface is not equal to covered surface.
 #'     - Number of bedrooms is between 1 and 7 (inclusive).
@@ -28,7 +37,8 @@
 #'     - Number of garage spaces is between 0 and 6 (inclusive).
 #'     - Number of rooms is between 1 and 10 (inclusive).
 #'   - Category B: Houses that meet the following criteria:
-#'     - Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+#'     - Land surface or reconstructed land surface is greater than 0 and not equal to
+#'     reconstructed land surface.
 #'     - Total surface and covered surface are greater than 0.
 #'     - Total surface is not equal to covered surface.
 #'     - Number of bedrooms is between 1 and 7 (inclusive).
@@ -36,7 +46,8 @@
 #'     - The property is not marked as "is_new_property" missing.
 #'     - The property's year built is between 1900 and the current year.
 #'   - Category C: Houses that meet the following criteria:
-#'     - Land surface or reconstructed land surface is greater than 0 and not equal to reconstructed land surface.
+#'     - Land surface or reconstructed land surface is greater than 0 and not equal to
+#'     reconstructed land surface.
 #'     - Total surface and covered surface are greater than 0.
 #'     - Total surface is not equal to covered surface.
 #'     - Number of bedrooms is between 1 and 7 (inclusive).
@@ -101,19 +112,28 @@
 #'     - The property is not marked as "is_new_property" missing.
 #'     - The property is not marked as "is_finished_property" missing.
 #'
-#' Note: The function assumes that the input dataset has columns named "property_group", "land_surface", "reconstructed_land_surface", "total_surface", "covered_surface", "number_bedrooms", "number_bathrooms", "is_new_property", "year_built", "garage_amount", "number_rooms", and "is_finished_property" that are used for applying the quality criteria.
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#' ##########warning!!!! ojo!!!! chequear que una vez obtenidas las categorias de esta variable
-#' ver que a la hora de nalizar y operar copn datos considere las columnas correctas( complementariedad de las variables de superficie). es decir, ver que con que variables operar, por ejemplo de superficie (si es reconstructed o sin reconstructed)
+#' Note: The function assumes that the input dataset has columns named "property_group",
+#' "land_surface", "reconstructed_land_surface", "total_surface", "covered_surface",
+#' "number_bedrooms", "number_bathrooms", "is_new_property", "year_built", "garage_amount",
+#' "number_rooms", and "is_finished_property" that are used for applying the quality
+#' criteria.
 #'
 #' @examples
-#' data <- read.csv("property_data.csv")
+#' data <- data.frame(
+#' property_group = c('Casa', 'Ph', 'Departamento', 'Casa', 'Ph', 'Departamento'),
+#' land_surface = c(500, 200, 0, 700, 350, 0),
+#' reconstructed_land_surface = c(150, 400, 150, 300, 600, 200),
+#' reconstructed_total_surface = c(150, 400, 150, 300, 600, 200),
+#' total_surface = c(700, 300, 800, 600, 400, 1000),
+#' covered_surface = c(600, 250, 750, 550, 350, 900),
+#' bed_amnt = c(5, 3, 2, 6, 4, 2),
+#' bath_amnt = c(3, 2, 1, 4, 2, 1),
+#' is_new_property = c(FALSE, TRUE, FALSE, TRUE, TRUE, FALSE),
+#' year_built = c(1990, 2020, 1980, 2005, 2015, 1995),
+#' garage_amnt = c(2, 0, 1, 3, 0, 2),
+#' room_amnt = c(8, 4, 3, 7, 5, 4),
+#' is_finished_property = c(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE))
+#'
 #' filtered_data <- data_quality(data)
 #'
 #' @export
