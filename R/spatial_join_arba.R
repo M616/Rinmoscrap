@@ -23,7 +23,21 @@
 #'
 #' @examples
 #' # Example usage
-#' data <- read_sf("path/to/your/data.shp")
+#' data <- data.frame(property_group = c('Casa', 'Ph', 'Departamento', 'Casa', 'Ph', 'Departamento'),
+#' land_surface = c(500, 200, 0, 700, 350, 0),
+#' reconstructed_land_surface = c(0, 0, 150, 0, 0, 200),
+#' total_surface = c(700, 300, 800, 600, 400, 1000),
+#' covered_surface = c(600, 250, 750, 550, 350, 900),
+#' bed_amnt = c(5, 3, 2, 6, 4, 2),
+#' bath_amnt = c(3, 2, 1, 4, 2, 1),
+#' is_new_property = c(FALSE, TRUE, FALSE, TRUE, TRUE, FALSE),
+#' year_built = c(1990, 2020, 1980, 2005, 2015, 1995),
+#' garage_amnt = c(2, 0, 1, 3, 0, 2),
+#' room_amnt = c(8, 4, 3, 7, 5, 4),
+#' is_finished_property = c(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE),
+#' latitude = c(-34.6118, -34.6518, -34.9226, -34.5831, -34.6058, -36.7597),
+#' longitude = c(-58.4173, -58.3595, -57.9500, -58.4009, -58.4403, -59.8597)
+#' )
 #' # Perform spatial join without 'corona' column
 #' result <- spatial_join_arba(data)
 #' # Perform spatial join with 'corona' column
