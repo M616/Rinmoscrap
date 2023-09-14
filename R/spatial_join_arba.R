@@ -60,31 +60,9 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   temp_dir <- tempdir()
   # URL of the ARBA polygon base ZIP file
   arba_zip_url <- "https://catalogo.datos.gba.gob.ar/dataset/627f65de-2510-4bf4-976b-16035828b5ae/resource/2cc73f96-98f7-42fa-a180-e56c755cf59a/download/limite_partidos.zip"
-
-  # Number of maximum download attempts
-  max_attempts <- 3
-
-  for (attempt in 1:max_attempts) {
-    tryCatch({
-      # Download the ARBA polygon base ZIP file
-      arba_zip_file <- file.path(temp_dir, "arba_polygon_base.zip")
-      download.file(arba_zip_url, destfile = arba_zip_file)
-
-      # If the download is successful, exit the loop
-      break
-    }, error = function(e) {
-      cat("Error downloading ARBA polygon base ZIP file (Attempt", attempt, "of", max_attempts, "):", conditionMessage(e), "\n")
-
-      # Wait for a short time before retrying (you can adjust the time as needed)
-      Sys.sleep(5)
-    })
-  }
-
-  # Check if the file was downloaded successfully
-  if (!file.exists(arba_zip_file)) {
-    cat("Failed to download the file after", max_attempts, "attempts. Please check your connection and try again later.\n")
-    return(NULL)
-  }
+  # Download the ARBA polygon base ZIP file
+  arba_zip_file <- file.path(temp_dir, "arba_polygon_base.zip")
+  download.file(arba_zip_url, destfile = arba_zip_file)
   # Extract the ZIP file to a temporary directory
   temp_folder <- unzip(arba_zip_file, exdir = temp_dir)
   # Read the ARBA polygon base
