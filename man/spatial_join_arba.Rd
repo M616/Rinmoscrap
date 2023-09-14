@@ -9,7 +9,8 @@ spatial_join_arba(data, include_crown = FALSE)
 \arguments{
 \item{data}{A spatial object representing points, lines, or polygons.}
 
-\item{include_crown}{Logical, indicating whether to include the 'corona' column. Default is FALSE.}
+\item{include_crown}{Logical, indicating whether to include the 'corona' column.
+Default is FALSE.}
 }
 \value{
 A modified spatial object with additional attributes obtained from the spatial
@@ -29,7 +30,8 @@ established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.
 }
 \examples{
 # Example usage
-data <- data.frame(property_group = c('Casa', 'Ph', 'Departamento', 'Casa', 'Ph', 'Departamento'),
+data <- data.frame(property_group = c('Casa', 'Ph', 'Departamento', 'Casa', 'Ph',
+'Departamento'),
 land_surface = c(500, 200, 0, 700, 350, 0),
 reconstructed_land_surface = c(0, 0, 150, 0, 0, 200),
 total_surface = c(700, 300, 800, 600, 400, 1000),
