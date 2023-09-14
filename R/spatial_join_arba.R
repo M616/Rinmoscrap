@@ -57,16 +57,20 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   # Convert the input object to sf and filter out rows with missing latitude or longitude values
   data <- sf::st_as_sf(data[!is.na(data$latitude) & !is.na(data$longitude), ], coords = c('longitude', 'latitude'), crs = 4326, remove = FALSE)
   # Create a temporary directory for storing the ARBA polygon base
-  temp_dir <- tempdir()
+
+  temp_dir <- file.path(tempdir(check = TRUE))
   # URL of the ARBA polygon base ZIP file
   arba_zip_url <- "https://catalogo.datos.gba.gob.ar/dataset/627f65de-2510-4bf4-976b-16035828b5ae/resource/2cc73f96-98f7-42fa-a180-e56c755cf59a/download/limite_partidos.zip"
   # Download the ARBA polygon base ZIP file
   arba_zip_file <- file.path(temp_dir, "arba_polygon_base.zip")
   download.file(arba_zip_url, destfile = arba_zip_file)
+
   # Extract the ZIP file to a temporary directory
   temp_folder <- unzip(arba_zip_file, exdir = temp_dir)
   # Read the ARBA polygon base
   partidos_pba <- sf::st_read(temp_folder[4])
+  unlink(temp_dir, recursive = TRUE)
+
   # Prepare ARBA polygons for the spatial join
   sf_use_s2(FALSE)
   partidos_pba <- sf::st_make_valid(partidos_pba)  # Ensure polygon validity
