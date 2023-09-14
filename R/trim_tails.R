@@ -5,8 +5,10 @@
 #'
 #' @param data The input dataframe
 #' @param column The name of the column in the dataframe to be trimmed
-#' @param lower_percentage The percentage of observations to exclude from the lower end of the distribution
-#' @param upper_percentage The percentage of observations to exclude from the upper end of the distribution
+#' @param lower_percentage The percentage of observations to exclude from the lower end of
+#' the distribution
+#' @param upper_percentage The percentage of observations to exclude from the upper end of
+#' the distribution
 #' @return The filtered dataframe after trimming the specified column
 #' @export
 #'
@@ -14,7 +16,8 @@
 #' # Example dataframe
 #' df <- data.frame(ID = 1:10, Values = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 #'
-#' # Filter the dataframe by trimming the "Values" column, excluding 20% from the lower end and 10% from the upper end
+#' # Filter the dataframe by trimming the "Values" column, excluding 20% from the lower end
+#' #and 10% from the upper end
 #' filtered_df <- trim_tails(df, "Values", 20, 10)
 #' print(filtered_df)
 #'
