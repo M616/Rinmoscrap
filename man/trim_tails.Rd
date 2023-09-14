@@ -11,9 +11,11 @@ trim_tails(data, column, lower_percentage, upper_percentage)
 
 \item{column}{The name of the column in the dataframe to be trimmed}
 
-\item{lower_percentage}{The percentage of observations to exclude from the lower end of the distribution}
+\item{lower_percentage}{The percentage of observations to exclude from the lower end of
+the distribution}
 
-\item{upper_percentage}{The percentage of observations to exclude from the upper end of the distribution}
+\item{upper_percentage}{The percentage of observations to exclude from the upper end of
+the distribution}
 }
 \value{
 The filtered dataframe after trimming the specified column
@@ -26,7 +28,8 @@ based on the percentage to exclude from the lower and upper ends of the distribu
 # Example dataframe
 df <- data.frame(ID = 1:10, Values = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
 
-# Filter the dataframe by trimming the "Values" column, excluding 20\% from the lower end and 10\% from the upper end
+# Filter the dataframe by trimming the "Values" column, excluding 20\% from the lower end
+#and 10\% from the upper end
 filtered_df <- trim_tails(df, "Values", 20, 10)
 print(filtered_df)
 
