@@ -110,7 +110,7 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   #partidos_pba <-  st_transform(partidos_pba, crs = 4326)
   #partidos_pba <-  sf::st_crs(partidos_pba,4326)
   #descarga el poligono de la matanza de github
-  coronas_file <- paste0(system.file(package = "Rinmoscrap"), '/files/coronas_la_matanza.gpkg')
+  coronas_file <- paste0(system.file(package = "Rinmoscrap"), '/data/coronas_la_matanza.gpkg')
   coronas_gpkg <- sf::st_read(coronas_file)
   coronas_gpkg <- sf::st_make_valid(coronas_gpkg)
   coronas_gpkg <-  st_transform(coronas_gpkg, crs = 4326)
