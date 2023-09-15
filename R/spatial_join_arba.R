@@ -69,7 +69,6 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   temp_folder <- unzip(arba_zip_file, exdir = temp_dir)
   # Read the ARBA polygon base
   partidos_pba <- sf::st_read(temp_folder[4])
-  #unlink(temp_dir, recursive = TRUE)
 
   # Prepare ARBA polygons for the spatial join
   sf_use_s2(FALSE)
@@ -91,7 +90,8 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
                                          corona)
   #partidos_pba <-  st_transform(partidos_pba, crs = 4326)
   #partidos_pba <-  sf::st_crs(partidos_pba,4326)
-  #descarga el poligono de la matanza de github
+
+  #La Matanza polygons
   coronas_file <- paste0(system.file(package = "Rinmoscrap"), '/data/coronas_la_matanza.gpkg')
   coronas_gpkg <- sf::st_read(coronas_file)
   coronas_gpkg <- sf::st_make_valid(coronas_gpkg)
@@ -119,8 +119,6 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   if (include_crown) {
     data$corona <- corona
   }
-  # Clean up the temporary directory
-  #unlink(temp_dir, recursive = TRUE)
-  #unlink(tempdir())
+
   return(data)
 }
