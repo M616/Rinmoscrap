@@ -69,7 +69,7 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
   temp_folder <- unzip(arba_zip_file, exdir = temp_dir)
   # Read the ARBA polygon base
   partidos_pba <- sf::st_read(temp_folder[4])
-  unlink(temp_dir, recursive = TRUE)
+  #unlink(temp_dir, recursive = TRUE)
 
   # Prepare ARBA polygons for the spatial join
   sf_use_s2(FALSE)
@@ -120,7 +120,7 @@ spatial_join_arba <- function(data, include_crown = FALSE) {
     data$corona <- corona
   }
   # Clean up the temporary directory
-  unlink(temp_dir, recursive = TRUE)
-  unlink(tempdir())
+  #unlink(temp_dir, recursive = TRUE)
+  #unlink(tempdir())
   return(data)
 }
