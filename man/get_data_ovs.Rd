@@ -18,24 +18,16 @@ An 'sf' object containing soil data.
 This function downloads a .gpkg (Geopackage) file containing soil data from the Observatory of Soil Values
 in the Province of Buenos Aires. It then converts the data into an 'sf' (Simple Features) object for further analysis.
 }
-\details{
-The function relies on the 'googledrive' and 'sf' packages. If these packages are not installed, they need to be
-installed before using this function.
-}
 \examples{
 \dontrun{
 data <- get_data_ovs()
 head(data)
 }
 
+
 \dontrun{
 data <- get_data_ovs()
 head(data)
 }
 
-}
-\seealso{
-\href{https://cran.r-project.org/package=googledrive}{googledrive}
-
-\href{https://cran.r-project.org/package=sf}{sf}
 }
