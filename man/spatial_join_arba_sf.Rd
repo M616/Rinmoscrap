@@ -45,9 +45,9 @@ latitude = c(-34.6118, -34.6518, -34.9226, -34.5831, -34.6058, -36.7597),
 longitude = c(-58.4173, -58.3595, -57.9500, -58.4009, -58.4403, -59.8597)
 )
 # Perform spatial join without 'corona' column
-result <- spatial_join_arba(data)
+result <- spatial_join_arba_sf(data)
 # Perform spatial join with 'corona' column
-result_with_crown <- spatial_join_arba(data, include_crown = TRUE)
+result_with_crown <- spatial_join_arba_sf(data, include_crown = TRUE)
 
 }
 \references{
