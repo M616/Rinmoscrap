@@ -28,6 +28,9 @@ For the district of La Matanza, the function takes into account the criteria
 established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.pdf).
 }
 }
+\note{
+Those points located on the border of the matches can be included in one or more matches causing the records to be repeated
+}
 \examples{
 # Example usage
 data <- data.frame(property_group = c('Casa', 'Ph', 'Departamento', 'Casa', 'Ph', 'Departamento'),
