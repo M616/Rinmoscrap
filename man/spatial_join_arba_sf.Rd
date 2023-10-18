@@ -44,6 +44,7 @@ is_finished_property = c(TRUE, FALSE, TRUE, TRUE, TRUE, FALSE),
 latitude = c(-34.6118, -34.6518, -34.9226, -34.5831, -34.6058, -36.7597),
 longitude = c(-58.4173, -58.3595, -57.9500, -58.4009, -58.4403, -59.8597)
 )
+data <- sf::st_as_sf(data, coords = c('longitude', 'latitude'), crs = 4326, remove = FALSE)
 # Perform spatial join without 'corona' column
 result <- spatial_join_arba_sf(data)
 # Perform spatial join with 'corona' column
