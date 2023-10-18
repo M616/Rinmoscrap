@@ -9,6 +9,8 @@
 #' For the district of La Matanza, the function takes into account the criteria
 #' established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.pdf).
 #'
+#' @note Those points located on the border of the matches can be included in one or more matches causing the records to be repeated
+#'
 #' @param data A spatial object representing points, lines, or polygons.
 #'
 #' @param include_crown Logical, indicating whether to include the 'corona' column. Default is FALSE.
