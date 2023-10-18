@@ -1,6 +1,7 @@
 #' Spatial join with ARBA polygon base and attribute recoding
 #'
-#' This function performs a spatial join between a spatial object and the base of the ARBA
+#' This function performs a spatial join between a dataframe with longitude and
+#' latitude columns and the base of the ARBA
 #' polygon. It also recodes the resulting attributes using the official nomenclature and,
 #' optionally, adds a 'corona' column for the districts of the RMBA
 #' - Buenos Aires Metropolitan Region - (Fernández Leonardo, 2011. Instituto del Conurbano.
