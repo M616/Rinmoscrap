@@ -108,8 +108,8 @@ spatial_join_arba_sf <- function(data, include_crown = FALSE) {
   partidos_pba <- sf::st_make_valid(partidos_pba)
   # Perform spatial join with ARBA polygons
   data <- sf::st_join(data, partidos_pba[c('nam', 'cca','corona')], join = sf::st_intersects, left=TRUE )
-  # Remove geometry column and rename attributes
-  data <- sf::st_drop_geometry(data)
+  # Rename attributes
+
   data$nombre_arba <- data$nam
   data$arba_code <- data$cca
   data$nam <- NULL
