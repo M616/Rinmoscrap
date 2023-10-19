@@ -8,7 +8,11 @@
 #' For the district of La Matanza, the function takes into account the criteria
 #' established by INDEC (INDEC, 2003. https://www.indec.gob.ar/dbindec/folleto_gba.pdf).
 #'
-#' @note Those points located on the border of the matches can be included in one or more matches causing the records to be repeated
+#' @note Those points located on the border of the matches can be included in one or more matches causing the
+#' records to be repeated. On the other hand, the arba base has splintered polygons,
+#' that is, there are often spaces between the geometries. This causes that when
+#' making the spatial union with the real estate base, the points that are located
+#' in those spaces are discarded.
 #'
 #' @param data A spatial object representing points, lines, or polygons.
 #'
