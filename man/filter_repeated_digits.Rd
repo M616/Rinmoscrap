@@ -12,11 +12,12 @@ filter_repeated_digits(data, column)
 \item{column}{The name of the column in the dataframe to apply the function to}
 }
 \value{
-The filtered dataframe where the count of unique digits in the specified column is greater than 1
+The filtered dataframe where the count of unique digits in the specified column is greater than 1 or NA
 }
 \description{
 This function takes a dataframe and filters the data based on the condition
 that the count of unique digits is greater than 1 in the specified column.
+It retains rows with NA values in the specified column.
 }
 \examples{
 # Example dataframe
