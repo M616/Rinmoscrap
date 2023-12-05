@@ -2,10 +2,11 @@
 #'
 #' This function takes a dataframe and filters the data based on the condition
 #' that the count of unique digits is greater than 1 in the specified column.
+#' It retains rows with NA values in the specified column.
 #'
 #' @param data A dataframe containing the data
 #' @param column The name of the column in the dataframe to apply the function to
-#' @return The filtered dataframe where the count of unique digits in the specified column is greater than 1
+#' @return The filtered dataframe where the count of unique digits in the specified column is greater than 1 or NA
 #'
 #' @examples
 #' # Example dataframe
@@ -20,25 +21,19 @@
 #' @export
 #'
 filter_repeated_digits <- function(data, column) {
-  # Apply the function to each element in the specified column
-  result <- sapply(data[[column]], function(element) {
-    # Convert the element to a character
-    elemento <- as.character(element)
-
-    # Split the character into individual digits
-    digitos <- strsplit(elemento, "")[[1]]
-
-    # Get the unique digits
-    digitos_unicos <- unique(digitos)
-
-    # Count the number of unique digits
-    cantidad <- length(digitos_unicos)
-
-    return(cantidad)
-  })
-
-  # Filter the dataframe based on the condition
-  filtered_data <- data[result > 1, ]
+  filtered_data <- data %>%
+    mutate(CountUniqueDigits = sapply(data[[column]], function(element) {
+      if (is.na(element)) {
+        return(NA)
+      } else {
+        element_str <- as.character(element)
+        digits <- strsplit(element_str, "")[[1]]
+        unique_digits <- unique(digits)
+        return(length(unique_digits))
+      }
+    })) %>%
+    filter(is.na(CountUniqueDigits) | CountUniqueDigits > 1) %>%
+    select(-CountUniqueDigits)
 
   return(filtered_data)
 }
