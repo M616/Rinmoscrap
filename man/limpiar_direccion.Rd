@@ -17,43 +17,17 @@ for detected street names. Default is \code{FALSE}.}
 \value{
 A data frame with at least:
 \itemize{
-\item \code{geocodable}: Logical flag indicating if the address matched any geocoding pattern.
 \item \code{direccion_limpia}: Cleaned and standardized address.
-\item If \code{return_streets = TRUE}, also includes:
-\itemize{
-\item \code{calle1}: First street detected from intersection patterns.
-\item \code{calle2}: Second street detected from intersection patterns.
-}
 }
 }
 \description{
 This function detects and standardizes potentially geocodable addresses,
 especially street intersections and numeric formats. It identifies patterns
-such as "Calle1 y Calle2", "Calle1 e Calle2", or "entre Calle1 y Calle2",
+such as "Calle1 y Calle2", "Calle1 e Calle2", "entre Calle1 y Calle2",
 and formats them for cleaner and more consistent geocoding.
 }
 \details{
-The function also normalizes text: it removes accents, unnecessary punctuation,
-trims whitespace, converts to lowercase, and standardizes common patterns.
-}
-\examples{
-library(dplyr)
-
-# Example addresses
-direcciones <- tibble::tibble(
-  address = c(
-    "Avellaneda y Rivadavia",
-    "Mitre e/ Belgrano y San Martín",
-    "Ruta 2, Km 398",
-    "Calle 45 al 1234, entre 10 y 11",
-    "Los Talas e Los Ceibos y San Francisco"
-  )
-)
-
-# Basic usage
-limpiar_direccion(direcciones)
-
-# With return_streets = TRUE
-limpiar_direccion(direcciones, return_streets = TRUE)
-
+It also removes accents, unnecessary punctuation, trims whitespace, converts
+to lowercase, standardizes common patterns, removes points, and trims everything
+after commas or semicolons.
 }
