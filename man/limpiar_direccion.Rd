@@ -9,25 +9,15 @@ limpiar_direccion(data, address_col = "address", return_streets = FALSE)
 \arguments{
 \item{data}{A data frame containing address data.}
 
-\item{address_col}{A string with the name of the address column. Default is \code{"address"}.}
+\item{address_col}{Name of the address column. Default is "address".}
 
-\item{return_streets}{Logical. If \code{TRUE}, returns additional columns \code{calle1} and \code{calle2}
-for detected street names. Default is \code{FALSE}.}
+\item{return_streets}{Logical. If TRUE, returns additional columns calle1 and calle2.}
 }
 \value{
-A data frame with at least:
-\itemize{
-\item \code{direccion_limpia}: Cleaned and standardized address.
-}
+Original dataset plus a cleaned column direccion_limpia.
 }
 \description{
-This function detects and standardizes potentially geocodable addresses,
-especially street intersections and numeric formats. It identifies patterns
-such as "Calle1 y Calle2", "Calle1 e Calle2", "entre Calle1 y Calle2",
-and formats them for cleaner and more consistent geocoding.
-}
-\details{
-It also removes accents, unnecessary punctuation, trims whitespace, converts
-to lowercase, standardizes common patterns, removes points, and trims everything
-after commas or semicolons.
+Detects and standardizes addresses, handling street intersections and numeric formats.
+Removes accents, punctuation, points, trims whitespace, converts to lowercase,
+and removes everything after commas or semicolons.
 }
