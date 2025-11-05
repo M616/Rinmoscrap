@@ -19,5 +19,5 @@ Original dataset plus a cleaned column direccion_limpia.
 \description{
 Detects and standardizes addresses, handling street intersections and numeric formats.
 Removes accents, punctuation, points, trims whitespace, converts to lowercase,
-and removes everything after commas or semicolons.
+and removes everything after commas or semicolons. Keeps "Entre Ríos" intact.
 }

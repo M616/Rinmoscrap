@@ -2,7 +2,7 @@
 #'
 #' Detects and standardizes addresses, handling street intersections and numeric formats.
 #' Removes accents, punctuation, points, trims whitespace, converts to lowercase,
-#' and removes everything after commas or semicolons.
+#' and removes everything after commas or semicolons. Keeps "Entre Ríos" intact.
 #'
 #' @param data A data frame containing address data.
 #' @param address_col Name of the address column. Default is "address".
@@ -12,7 +12,7 @@
 #' @export
 limpiar_direccion <- function(data, address_col = "address", return_streets = FALSE) {
 
-   df <- data %>%
+  df <- data %>%
     mutate(
       direccion_limpia = sapply(.data[[address_col]], function(x) {
         if(is.na(x)) return(NA_character_)
@@ -30,9 +30,12 @@ limpiar_direccion <- function(data, address_col = "address", return_streets = FA
           loc <- str_locate(x, patron_num)[,2]
           x <- str_sub(x, 1, loc)
         } else {
-          # Procesar intersecciones
+          # Procesar intersecciones, excepto cuando es "Entre Ríos"/"Entre Rios"
           x <- x %>%
-            str_replace_all(regex("\\bentre\\b", ignore_case = TRUE), "") %>%
+            str_replace_all(
+              regex("\\bentre\\b(?!\\s(r[ií]os))", ignore_case = TRUE),
+              ""
+            ) %>%
             str_replace_all(regex("\\be/?\\b", ignore_case = TRUE), " y ") %>%
             str_squish()
 
@@ -59,21 +62,18 @@ limpiar_direccion <- function(data, address_col = "address", return_streets = FA
       }, USE.NAMES = FALSE)
     )
 
-  # Si return_streets = FALSE, solo agrega direccion_limpia
-  if(!return_streets) {
-    return(df)
-  }
-
   # Si return_streets = TRUE, separar calle1 y calle2
-  df <- df %>%
-    mutate(
-      calle1 = sapply(direccion_limpia, function(x) {
-        if(!is.na(x) && str_detect(x, "\\sy\\s")) str_split(x, "\\sy\\s")[[1]][1] else NA_character_
-      }),
-      calle2 = sapply(direccion_limpia, function(x) {
-        if(!is.na(x) && str_detect(x, "\\sy\\s")) str_split(x, "\\sy\\s")[[1]][2] else NA_character_
-      })
-    )
+  if(return_streets) {
+    df <- df %>%
+      mutate(
+        calle1 = sapply(direccion_limpia, function(x) {
+          if(!is.na(x) && str_detect(x, "\\sy\\s")) str_split(x, "\\sy\\s")[[1]][1] else NA_character_
+        }),
+        calle2 = sapply(direccion_limpia, function(x) {
+          if(!is.na(x) && str_detect(x, "\\sy\\s")) str_split(x, "\\sy\\s")[[1]][2] else NA_character_
+        })
+      )
+  }
 
   return(df)
 }
